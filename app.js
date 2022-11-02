@@ -3,37 +3,42 @@ const fs = require("fs");
 const path = require("path");
 
 const sever = http.createServer((req, res) => {
-  const test = fs.readFileSync("./index.html", (err) => {
-    if (err) throw err;
-  });
-  const css = fs.readFileSync("./style.css", (err) => {
-    if (err) throw err;
-  });
-  const scrpit = fs.readFileSync("./event.js", (err) => {
-    if (err) throw err;
-  });
-
   if (req.method === "GET") {
-    if (req.url === "/") {
-      console.log("메롱");
+    let getSting = req.url;
 
-      res.writeHead(200, { "content-Type": "text/html" });
-      res.write(test);
-      res.end();
-    } else if (req.url === "/style.css") {
-      console.log("무슨모양?");
+    switch (getSting) {
+      case "/":
+        console.log("HTML");
+        const test = fs.readFileSync("./index.html", (err) => {
+          if (err) throw err;
+        });
+        res.writeHead(200, { "content-Type": "text/html" });
+        res.write(test);
+        res.end();
 
-      res.writeHead(200, { "content-Type": "text/css" });
-      res.write(css);
-      res.end();
-    } else if (req.url == "/event.js") {
-      console.log("script파일 왔니?");
+        break;
+      case "/style.css":
+        console.log("CSS");
+        const css = fs.readFileSync("./style.css", (err) => {
+          if (err) throw err;
+        });
+        res.writeHead(200, { "content-Type": "text/css" });
+        res.write(css);
+        res.end();
 
-      res.writeHead(200, { "content-Type": "text/javascript" });
-      res.write(scrpit);
-      res.end();
+        break;
+
+      case "/event.js":
+        console.log("Javascript");
+        const scrpit = fs.readFileSync("./event.js", (err) => {
+          if (err) throw err;
+        });
+        res.writeHead(200, { "content-Type": "text/javascript" });
+        res.write(scrpit);
+        res.end();
+
+        break;
     }
-    console.log(req.url);
   }
 });
 
